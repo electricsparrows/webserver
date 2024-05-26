@@ -75,18 +75,18 @@ def create_server():
         req_received = c.recv(1024).decode()
         print(f'RECEIVED: {req_received}')
         ## parse message
-
+        req = parse_request(req_received)
         # send response
         #http_response = "HTTP/1.1 200 OK\r\n\r\nRequested path: <the path>\r\n"
-        c.send(get_http_response().encode())
+        c.send(get_http_response(req).encode())
         c.close
         break
 
 
 
 if __name__ == '__main__':
-    #create_server()
-    req1 = "GET / HTTP/1.1"
+    create_server()
+    """ req1 = "GET / HTTP/1.1"
     req2 = "GET /inde.html HTTP/1.1"
     req3 = "POST / HTTP/1.1"
 
@@ -98,5 +98,5 @@ if __name__ == '__main__':
     s2 = get_http_response(req2)
     s3 = get_http_response(req3)
 
-    print(s2, sep='\n\n')
+    print(s2, sep='\n\n') """
 
