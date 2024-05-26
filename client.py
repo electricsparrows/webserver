@@ -3,7 +3,6 @@
 import socket
 
 s = socket.socket()
-
 port = 80
 host = "127.0.0.1"
 s.connect((host, port))
@@ -14,9 +13,10 @@ while True:
     s.send(req.encode())
     RECEIVED = s.recv(1024).decode()
     print(RECEIVED)
+    s.close()
     break
     
-s.close()
+
 
 def get_http_message():
     msg = 'GET / HTTP/1.1'
