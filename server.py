@@ -54,7 +54,7 @@ def get_http_response(req) -> str:
 def create_server():
     # initiate the server
     try: 
-        s = socket.socket()
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #ipv4, tcp
         print("Socket successfully created")
     except socket.error as err:
         print ("socket creation failed with error %s" %(err))
