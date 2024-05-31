@@ -69,33 +69,51 @@ def create_server():
     print("listening")
     return s
 
+def stop_server():
+    while True:
+        cmd = input("Type ctrl-c to stop server")
+        if cmd == "C":
+            return True
+        else:
+            return False
 
 
 if __name__ == '__main__':
     server = create_server()
+    conn_threads = []
+    stop = False
+    #exit_prompt_thd = threading.Thread(target=stop_server)
+    #exit_prompt_thd.start()
+    #print(exit_prompt_thd)  #<Thread(Thread-1 (stop_server), started 27348)>
 
-    while True:
+    while stop==False:
         c, addr = server.accept()
         print(f'... Connection to {addr} etablished')
-
         #client.send(bytes(server.greeting()), 'ascii')
+
         def handle_client(c : socket):
             while True:
+                '''keep processing message unless get no message content. Then close the socket'''
                 req_received = c.recv(1024).decode()
                 print(f'RECEIVED: {req_received}')
                 if not req_received:
                     print(f'Client {addr} disconnected')
                     c.close()
-                    break
+                    return
                 else:
                     req = parse_request(req_received)
                     c.send(get_http_response(req).encode())
         
-        handle_client(c)
+        #handle_client(c)
 
-        # Idea is that: everytime a connection is opened --> start a new thread
-        #thd1 = threading.Thread(target=handle_client)
+        # Parallel Execution
+        # everytime a connection is opened --> start a new thread
         # complete processing
         # rejoin thread
+        thd = threading.Thread(target=handle_client, args=(c,))
+        thd.start()
+        conn_threads.append(thd)
 
-        print('in main server loop')
+
+    for thd in conn_threads:
+        thd.join()   

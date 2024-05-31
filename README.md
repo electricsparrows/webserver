@@ -19,5 +19,12 @@ Issues/ Learning notes:
 - not sure how to structure the http codes so that it accomodates for increasing checks and codes.
 
 3. Handling Multiple Concurrent clients
+- think about how to write this as a for-loop first
+- then parallelize
+
 
 4. Addressing security risks
+
+
+B. Refactoring notes:
+- rewrite server.py into a server object?

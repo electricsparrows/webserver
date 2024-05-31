@@ -3,6 +3,7 @@
 #1. Create a socket
 import socket
 from pathlib import Path
+import threading as thd
 
 #this is a helper function
 def fetch_document_at_path(path):
@@ -22,7 +23,6 @@ def fetch_document_at_path(path):
         #logging
         raise e
     
-
 # these are more processing 'steps'
 def parse_request(req_msg: str) -> dict: 
     split_strs = req_msg.split()
@@ -65,7 +65,7 @@ def create_server():
     print ("socket binded to %s" %(port)) 
     
     # activate server to listen for connections
-    s.listen(1)
+    s.listen(3)   # server will accept 3 connections at a time before refusing new cnes.
     print("listening")
     while True:
         c, addr = s.accept()
